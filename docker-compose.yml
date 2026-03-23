@@ -1,0 +1,56 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:17
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=boilerplate
+      - POSTGRES_PASSWORD=boilerplate
+      - POSTGRES_DB=boilerplate
+
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app:delegated
+      - server_gradle_cache:/app/.gradle
+    depends_on:
+      - postgres
+    command: ["./gradlew", "bootRun", "--args", "server"]
+
+  worker:
+    container_name: worker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - .:/app:delegated
+      - worker_gradle_cache:/app/.gradle
+    depends_on:
+      - postgres
+    command: ["./gradlew", "bootRun", "--args", "worker"]
+
+  test_server:
+    container_name: test_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - .:/app:delegated
+      - test_gradle_cache:/app/.gradle
+    depends_on:
+      - postgres
+    tty: true
+
+volumes:
+  server_gradle_cache:
+  worker_gradle_cache:
+  test_gradle_cache:

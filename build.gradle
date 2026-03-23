@@ -92,7 +92,7 @@ subprojects {
         implementation 'com.zaxxer:HikariCP:7.0.2'
         implementation 'org.postgresql:postgresql:42.7.10'
         implementation 'commons-dbutils:commons-dbutils:1.8.1'
-        testImplementation 'com.h2database:h2:2.3.232'
+        testRuntimeOnly 'com.h2database:h2:2.3.232'
 
         testImplementation rootProject.sourceSets.main.output
 
