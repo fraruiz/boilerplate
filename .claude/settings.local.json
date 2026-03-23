@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep \"\\\\.java$\")",
+      "Bash(find /Users/francisco/Develop/boilerplate/app/main -name *.java)",
+      "Bash(find /Users/francisco/Develop/boilerplate/src/iam/main -name *.java)",
+      "Bash(find /Users/francisco/Develop/boilerplate/src/analytics/main -name *.java)",
+      "Bash(./gradlew dependencies:*)",
+      "Bash(find /Users/francisco/Develop/boilerplate -type f -name *.properties -o -name *.yml -o -name *.yaml)",
+      "Bash(xargs ls:*)",
+      "Bash(grep -E \"/\\(analytics|shared\\)$\")",
+      "Bash(./gradlew :analytics:test)",
+      "Bash(./gradlew :analytics:test --stacktrace)",
+      "Bash(./gradlew :shared:test)",
+      "Bash(./gradlew :analytics:test --info)",
+      "Bash(./gradlew :analytics:test --rerun)",
+      "Bash(./gradlew :analytics:test --rerun --info)"
+    ]
+  }
+}

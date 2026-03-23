@@ -1,0 +1,118 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+allprojects {
+    apply plugin: 'java'
+
+    group = 'com.example'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
+    }
+
+    dependencies {
+        // SERVER
+        implementation 'io.javalin:javalin:7.1.0'
+
+        // MAPPER
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.2'
+        implementation 'com.fasterxml.jackson.module:jackson-module-blackbird:2.21.2'
+        implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.2'
+
+        // DEPENDENCY INJECTION
+        implementation 'com.google.inject:guice:7.0.0'
+        implementation 'com.google.guava:guava:33.5.0-jre'
+        implementation 'org.reflections:reflections:0.10.2'
+
+        // LOGS
+        implementation 'org.slf4j:slf4j-simple:2.0.17'
+
+        // TESTING
+        testImplementation 'org.mockito:mockito-core:5.23.0'
+        testImplementation 'com.github.javafaker:javafaker:1.0.2'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:6.1.0-M1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:6.1.0-M1'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+        failOnNoDiscoveredTests = false
+        jvmArgs '-Dguice_bytecode_gen_option=DISABLED'
+    }
+
+    tasks.withType(JavaExec).configureEach {
+        jvmArgs '-Dguice_bytecode_gen_option=DISABLED'
+    }
+}
+
+subprojects {
+    sourceSets {
+        main {
+            java { srcDirs = ['main'] }
+            resources { srcDirs = ['main/resources'] }
+        }
+        test {
+            java { srcDirs = ['test'] }
+            resources { srcDirs = ['test/resources'] }
+        }
+    }
+
+    dependencies {
+        // SQL
+        implementation 'com.zaxxer:HikariCP:7.0.2'
+        implementation 'org.postgresql:postgresql:42.7.10'
+        implementation 'commons-dbutils:commons-dbutils:1.8.1'
+        testImplementation 'com.h2database:h2:2.3.232'
+
+        testImplementation rootProject.sourceSets.main.output
+
+        if (project.name != "shared") {
+            implementation project(":shared")
+            testImplementation project(":shared").sourceSets.test.output
+        }
+    }
+
+    jar { enabled = true }
+}
+
+sourceSets {
+    main {
+        java { srcDirs = ['app/main'] }
+        resources { srcDirs = ['app/main/resources'] }
+    }
+    test {
+        java { srcDirs = ['app/test'] }
+        resources { srcDirs = ['app/test/resources'] }
+    }
+}
+
+dependencies {
+    implementation project(":shared")
+    implementation project(":analytics")
+
+    testImplementation project(":shared").sourceSets.test.output
+}
+
+jar {
+    archiveFileName = 'app.jar'
+    enabled = true
+}
