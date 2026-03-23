@@ -1,9 +1,9 @@
 package com.example.shared.domain.valueobjects;
 
-import com.github.javafaker.Faker;
+import java.util.UUID;
 
 public class StringValueObjectMother {
     public static String random() {
-        return Faker.instance().app().name();
+        return UUID.randomUUID().toString();
     }
 }

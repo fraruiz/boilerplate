@@ -15,6 +15,7 @@ allprojects {
 
     group = 'com.example'
 
+
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(25)
@@ -51,7 +52,6 @@ allprojects {
 
         // TESTING
         testImplementation 'org.mockito:mockito-core:5.23.0'
-        testImplementation 'com.github.javafaker:javafaker:1.0.2'
         testImplementation 'org.junit.jupiter:junit-jupiter-api:6.1.0-M1'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:6.1.0-M1'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

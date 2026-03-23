@@ -6,6 +6,7 @@ import com.example.shared.domain.errors.internal.InternalError;
 import com.example.shared.domain.errors.internal.ServiceUnavailable;
 import com.example.shared.domain.logs.Logger;
 import com.example.shared.domain.mappers.Mapper;
+import com.example.shared.domain.resilience.Resilience;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -24,10 +25,12 @@ public abstract class RestClient {
     private final Mapper mapper;
     private final HttpClient httpClient;
     private final String baseUrl;
+    private final Resilience resilience;
 
-    protected RestClient(Logger logger, Mapper mapper, String baseUrl) {
+    protected RestClient(Logger logger, Mapper mapper, Resilience resilience, String baseUrl) {
         this.logger = logger;
         this.mapper = mapper;
+        this.resilience = resilience;
         this.baseUrl = baseUrl;
         this.httpClient = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
@@ -102,6 +105,13 @@ public abstract class RestClient {
     }
 
     private <T> T execute(HttpRequest request, Class<T> responseType) {
+        String name = getClass().getSimpleName();
+        return resilience.withCircuitBreaker(name, () ->
+            resilience.withRetry(name, () -> doExecute(request, responseType))
+        );
+    }
+
+    private <T> T doExecute(HttpRequest request, Class<T> responseType) {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
