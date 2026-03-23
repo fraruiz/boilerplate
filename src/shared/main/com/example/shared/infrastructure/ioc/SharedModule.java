@@ -18,13 +18,20 @@ import com.example.shared.infrastructure.env.SystemEnvironment;
 import com.example.shared.infrastructure.locks.InMemoryLocker;
 import com.example.shared.infrastructure.logs.Slf4jLogger;
 import com.example.shared.infrastructure.mapper.JsonMapper;
-import com.example.shared.infrastructure.monitoring.DataDogMonitoring;
+import com.example.shared.infrastructure.monitoring.MicrometerMonitoring;
 import com.example.shared.infrastructure.persistence.DataSourceProvider;
-
 import com.example.shared.infrastructure.properties.DefaultPropertiesProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
+import io.micrometer.core.instrument.binder.system.UptimeMetrics;
+import io.micrometer.prometheusmetrics.PrometheusConfig;
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 
 
 public final class SharedModule extends AbstractModule {
@@ -55,8 +62,26 @@ public final class SharedModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public Monitoring monitoring() {
-        return new DataDogMonitoring();
+    public PrometheusMeterRegistry prometheusMeterRegistry() {
+        PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+        new JvmMemoryMetrics().bindTo(registry);
+        new JvmGcMetrics().bindTo(registry);
+        new JvmThreadMetrics().bindTo(registry);
+        new ProcessorMetrics().bindTo(registry);
+        new UptimeMetrics().bindTo(registry);
+        return registry;
+    }
+
+    @Provides
+    @Singleton
+    public MeterRegistry meterRegistry(PrometheusMeterRegistry registry) {
+        return registry;
+    }
+
+    @Provides
+    @Singleton
+    public Monitoring monitoring(MeterRegistry registry) {
+        return new MicrometerMonitoring(registry);
     }
 
     @Provides
