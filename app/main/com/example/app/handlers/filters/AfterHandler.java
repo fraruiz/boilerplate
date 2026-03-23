@@ -37,6 +37,8 @@ public final class AfterHandler extends MiddlewareHandler {
         Timer.Sample sample = ctx.attribute("timerSample");
         if (sample == null) return;
 
+        if ("/metrics".equals(ctx.path())) return;
+
         String uri = ctx.endpoint() != null ? ctx.endpoint().path : ctx.path();
 
         sample.stop(Timer.builder("http.server.requests")
