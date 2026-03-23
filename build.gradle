@@ -45,6 +45,10 @@ allprojects {
         // OPENAPI
         implementation 'io.swagger.core.v3:swagger-core-jakarta:2.2.25'
 
+        // RESILIENCE
+        implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.2.0'
+        implementation 'io.github.resilience4j:resilience4j-retry:2.2.0'
+
         // TESTING
         testImplementation 'org.mockito:mockito-core:5.23.0'
         testImplementation 'com.github.javafaker:javafaker:1.0.2'

@@ -21,6 +21,10 @@ import com.example.shared.infrastructure.mapper.JsonMapper;
 import com.example.shared.infrastructure.monitoring.MicrometerMonitoring;
 import com.example.shared.infrastructure.persistence.DataSourceProvider;
 import com.example.shared.infrastructure.properties.DefaultPropertiesProvider;
+import com.example.shared.domain.resilience.Resilience;
+import com.example.shared.infrastructure.resilience.Resilience4jResilience;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
+import io.github.resilience4j.retry.RetryRegistry;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -82,6 +86,15 @@ public final class SharedModule extends AbstractModule {
     @Singleton
     public Monitoring monitoring(MeterRegistry registry) {
         return new MicrometerMonitoring(registry);
+    }
+
+    @Provides
+    @Singleton
+    public Resilience resilience() {
+        return new Resilience4jResilience(
+            CircuitBreakerRegistry.ofDefaults(),
+            RetryRegistry.ofDefaults()
+        );
     }
 
     @Provides
