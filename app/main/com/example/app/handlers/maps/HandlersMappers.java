@@ -14,7 +14,7 @@ public class HandlersMappers implements EndpointGroup {
     private final List<? extends RequestHandler> handlers;
 
     public HandlersMappers() {
-        Reflections reflections = new Reflections(HandlersMappers.class.getPackageName());
+        Reflections reflections = new Reflections(RequestHandler.class.getPackageName());
         this.handlers = loadHandlers(reflections);
     }
 

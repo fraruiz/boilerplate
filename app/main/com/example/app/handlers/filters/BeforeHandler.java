@@ -7,18 +7,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class BeforeHandler extends MiddlewareHandler {
+    private static final String REQUEST_ID_HEADER = "X-Request-Id";
+
     @Override
     public void handle(Context ctx) {
-        String requestId = UUID.randomUUID().toString();
+        String requestId = ctx.header(REQUEST_ID_HEADER);
+        if (requestId == null || requestId.isBlank()) {
+            requestId = UUID.randomUUID().toString();
+        }
+
         ctx.attribute("requestStartTime", System.currentTimeMillis());
 
-        RequestContext.setRequestId(requestId);
+        RequestContext.set(requestId, ctx.method().toString(), ctx.path());
 
         logger.info("Incoming request", Map.of(
-            "method", ctx.method().toString(),
-            "path", ctx.path(),
-            "queryString", ctx.queryString() != null ? ctx.queryString() : "",
-            "headers", mapper.map(ctx.headerMap(), String.class)
+            "queryString", ctx.queryString() != null ? ctx.queryString() : ""
         ));
     }
 }
