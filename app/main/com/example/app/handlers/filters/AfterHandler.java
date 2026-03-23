@@ -15,14 +15,17 @@ public final class AfterHandler extends MiddlewareHandler {
 
         ctx.header(REQUEST_ID_HEADER, RequestContext.getRequestId());
 
-        if (!"/metrics".equals(ctx.path())) {
-            String uri = ctx.endpoint() != null ? ctx.endpoint().path : ctx.path();
-            monitoring.incrementCounter("http.server.requests", Map.of(
+        if ("/metrics".equals(ctx.path())) {
+            RequestContext.clear();
+            return;
+        }
+
+        String uri = ctx.endpoint() != null ? ctx.endpoint().path : ctx.path();
+        monitoring.incrementCounter("http.server.requests", Map.of(
                 "method", ctx.method().toString(),
                 "uri", uri,
                 "status", String.valueOf(ctx.status().getCode())
-            ));
-        }
+                                                                  ));
 
         logger.info("Request completed", Map.of(
             "status", ctx.status().getCode(),
