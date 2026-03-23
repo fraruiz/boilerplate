@@ -1,6 +1,6 @@
-package com.example.app.handlers.docs;
+package com.example.app.server.handlers.docs;
 
-import com.example.app.handlers.RequestHandler;
+import com.example.app.server.handlers.RequestHandler;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.swagger.v3.core.util.Json;

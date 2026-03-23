@@ -1,4 +1,4 @@
-package com.example.app.handlers;
+package com.example.app.server.handlers;
 
 import com.example.shared.domain.bus.command.CommandBus;
 import com.example.shared.domain.bus.query.QueryBus;

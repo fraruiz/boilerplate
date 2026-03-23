@@ -1,6 +1,6 @@
-package com.example.app.handlers.metrics;
+package com.example.app.server.handlers.metrics;
 
-import com.example.app.handlers.RequestHandler;
+import com.example.app.server.handlers.RequestHandler;
 import com.example.shared.infrastructure.ioc.IocContainer;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;

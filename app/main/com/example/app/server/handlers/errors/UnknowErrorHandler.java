@@ -1,4 +1,4 @@
-package com.example.app.handlers.errors;
+package com.example.app.server.handlers.errors;
 
 import io.javalin.http.Context;
 import io.javalin.http.ExceptionHandler;

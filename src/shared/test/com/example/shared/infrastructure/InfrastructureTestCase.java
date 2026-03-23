@@ -22,7 +22,7 @@ public abstract class InfrastructureTestCase {
     @BeforeEach
     protected void setUp() {
         this.mapper = new JsonMapper();
-        this.logger = new Slf4jLogger(this.mapper);
+        this.logger = new Slf4jLogger();
         this.dateProvider = new DefaultDateProvider();
 
         this.dataSource = DatabaseHelper.dataSource();

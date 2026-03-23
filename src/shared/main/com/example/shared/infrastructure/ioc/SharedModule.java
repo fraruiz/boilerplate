@@ -61,7 +61,7 @@ public final class SharedModule extends AbstractModule {
     @Provides
     @Singleton
     public Logger logger(Mapper mapper) {
-        return new Slf4jLogger(mapper);
+        return new Slf4jLogger();
     }
 
     @Provides

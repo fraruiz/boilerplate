@@ -1,4 +1,4 @@
-package com.example.app.handlers.filters;
+package com.example.app.server.handlers.filters;
 
 import com.example.shared.domain.logs.RequestContext;
 import io.javalin.http.Context;

@@ -1,6 +1,6 @@
-package com.example.app.handlers.maps;
+package com.example.app.server.handlers.maps;
 
-import com.example.app.handlers.RequestHandler;
+import com.example.app.server.handlers.RequestHandler;
 import io.javalin.apibuilder.EndpointGroup;
 import org.eclipse.jetty.http.HttpMethod;
 import org.reflections.Reflections;
