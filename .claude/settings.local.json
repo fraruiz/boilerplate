@@ -14,7 +14,27 @@
       "Bash(./gradlew :shared:test)",
       "Bash(./gradlew :analytics:test --info)",
       "Bash(./gradlew :analytics:test --rerun)",
-      "Bash(./gradlew :analytics:test --rerun --info)"
+      "Bash(./gradlew :analytics:test --rerun --info)",
+      "Bash(find /Users/francisco/Develop/boilerplate/app -name *.java -type f)",
+      "Bash(./gradlew compileJava 2>&1)",
+      "Bash(git -C /Users/francisco/Develop/boilerplate diff)",
+      "Bash(git -C /Users/francisco/Develop/boilerplate status)",
+      "Bash(git -C /Users/francisco/Develop/boilerplate log --oneline -3)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(xargs -I{} jar tf {})",
+      "Bash(xargs -I{} javap -classpath {} io.javalin.http.Context)",
+      "Bash(xargs -I{} javap -classpath {} io.javalin.router.Endpoint)",
+      "Bash(grep -v \"^$\")",
+      "Bash(git -C /Users/francisco/Develop/boilerplate add app/main/com/example/app/handlers/filters/AfterHandler.java)",
+      "Bash(git -C:*)",
+      "Bash(git -C /Users/francisco/Develop/boilerplate push)",
+      "Bash(./gradlew compileJava --no-daemon)",
+      "Bash(./gradlew :shared:compileJava --no-daemon)",
+      "Bash(mvn compile:*)",
+      "Bash(./gradlew :shared:compileTestJava)",
+      "Bash(./gradlew :shared:compileJava)"
     ]
   }
 }
